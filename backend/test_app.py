@@ -1,4 +1,4 @@
-# backend/app/test_app.py
+# backend/test_app.py
 
 from fastapi.testclient import TestClient
 from app.main import app
