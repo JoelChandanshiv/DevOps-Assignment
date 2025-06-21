@@ -1,0 +1,72 @@
+# .github/workflows/ci-cd.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+env:
+  AWS_REGION: ap-south-1
+  ECR_BACKEND_REPO: 850995570360.dkr.ecr.ap-south-1.amazonaws.com/devops-backend
+  ECR_FRONTEND_REPO: 850995570360.dkr.ecr.ap-south-1.amazonaws.com/devops-frontend
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+
+    - name: Run backend tests
+      working-directory: backend/app
+      run: |
+        pip install -r ../requirements.txt
+        pytest test_app.py
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Run frontend tests (placeholder)
+      working-directory: frontend
+      run: |
+        npm install
+        echo "No tests yet - add Jest/Cypress later"
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Build & Push Backend Image
+      working-directory: backend
+      run: |
+        IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
+        docker build -t $ECR_BACKEND_REPO:$IMAGE_TAG .
+        docker tag $ECR_BACKEND_REPO:$IMAGE_TAG $ECR_BACKEND_REPO:latest
+        docker push $ECR_BACKEND_REPO:$IMAGE_TAG
+        docker push $ECR_BACKEND_REPO:latest
+
+    - name: Build & Push Frontend Image
+      working-directory: frontend
+      run: |
+        IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
+        docker build -t $ECR_FRONTEND_REPO:$IMAGE_TAG .
+        docker tag $ECR_FRONTEND_REPO:$IMAGE_TAG $ECR_FRONTEND_REPO:latest
+        docker push $ECR_FRONTEND_REPO:$IMAGE_TAG
+        docker push $ECR_FRONTEND_REPO:latest
