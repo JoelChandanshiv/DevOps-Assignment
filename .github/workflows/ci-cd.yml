@@ -29,7 +29,7 @@ jobs:
       working-directory: backend
       run: |
         pip install pytest
-        pip install -r ../requirements.txt
+        pip install -r requirements.txt
         pytest
 
     - name: Set up Node.js
