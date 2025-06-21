@@ -28,6 +28,7 @@ jobs:
     - name: Run backend tests
       working-directory: backend/app
       run: |
+        pip install pytest
         pip install -r ../requirements.txt
         pytest test_app.py
 
