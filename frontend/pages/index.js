@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import axios from 'axios';
 
@@ -8,14 +8,16 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
+      // NOTE: Added fallback for API_URL to support Jest tests and CI
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      console.log("Hitting backend at:", baseUrl);
+
       try {
-        // First check if backend is healthy
-        const healthCheck = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/health`);
-        
+        const healthCheck = await axios.get(`${baseUrl}/api/health`);
+
         if (healthCheck.data.status === 'healthy') {
           setStatus('Backend is connected!');
-          // Then fetch the message
-          const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/message`);
+          const response = await axios.get(`${baseUrl}/api/message`);
           setMessage(response.data.message);
         }
       } catch (error) {
@@ -46,11 +48,11 @@ export default function Home() {
           <p>{message}</p>
         </div>
         <div className="info">
-          <p>Backend URL: {process.env.NEXT_PUBLIC_API_URL}</p>
+          <p>Backend URL: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}</p>
         </div>
       </main>
 
-      <style jsx>{`
+      <style jsx global>{`
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;

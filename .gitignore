@@ -1,0 +1,108 @@
+# Node modules and logs
+**/node_modules/
+**/.next/
+**/out/
+**/.vercel/
+**/.turbo/
+**/.cache/
+**/coverage/
+**/.jest-cache/
+**/.eslintcache
+**/.parcel-cache/
+**/.storybook/
+
+# Build output
+**/build/
+**/dist/
+**/tmp/
+**/temp/
+**/static/
+
+# Dependency locks (optional in monorepos)
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+*.egg/
+.venv/
+venv/
+env/
+ENV/
+*.env
+.env.*
+*.db
+instance/
+db.sqlite3
+
+# FastAPI and Python test artifacts
+backend/.pytest_cache/
+backend/__pycache__/
+backend/.mypy_cache/
+backend/.coverage
+backend/htmlcov/
+backend/.env
+
+# VSCode and IDE settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Docker
+**/docker-compose.override.yml
+.docker/
+.dockerignore
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+crash.log
+*.tfvars
+
+# AWS credentials (should never be committed)
+.aws/
+
+# GitHub Actions
+**/.github/workflows/*.log
+**/.github/*.log
+
+# System
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+*.pid
+
+# Test coverage and reports
+**/jest-html-reporters-*.html
+**/test-report/
+**/reports/
+
+# Optional: ECR credentials
+**/ecr-login.txt
+
+# Ignore compiled files
+*.so
+*.dll
+
+# Ignore local environment files
+.env.local
+.env.development
+.env.test
+.env.production
+frontend/.env.local
+backend/.env.local
+
+# Ignore backend/frontend container artifacts
+*.tar
+*.img

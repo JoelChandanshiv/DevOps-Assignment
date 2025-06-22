@@ -1,4 +1,3 @@
-# .github/workflows/ci-cd.yml
 name: CI/CD Pipeline
 
 on:
@@ -16,6 +15,9 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    env:
+      IMAGE_TAG: ${{ github.sha }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -25,23 +27,23 @@ jobs:
       with:
         python-version: 3.11
 
-    - name: Run backend tests
+    - name: Install backend dependencies & run tests
       working-directory: backend
       run: |
-        pip install pytest
         pip install -r requirements.txt
-        pytest
+        pip install pytest httpx
+        pytest app/test_app.py
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 18
 
-    - name: Run frontend tests (placeholder)
+    - name: Install frontend dependencies & run dummy test
       working-directory: frontend
       run: |
-        npm install
-        echo "No tests yet - add Jest/Cypress later"
+        npm ci
+        echo "Add Jest/Cypress tests here"
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
