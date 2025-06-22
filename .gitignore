@@ -102,6 +102,8 @@ logs/
 .env.production
 frontend/.env.local
 backend/.env.local
+.env.local
+.babelrc
 
 # Ignore backend/frontend container artifacts
 *.tar
