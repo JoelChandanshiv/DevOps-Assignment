@@ -18,7 +18,7 @@ app.add_middleware(
 )
 
 def get_secret():
-    secret_name = "pgagi-api-key"
+    secret_name = "pgagi-api-key-new"
     region_name = os.getenv("AWS_REGION", "ap-south-1")
 
     print(f"Fetching secret from Secrets Manager: {secret_name} in {region_name}")
