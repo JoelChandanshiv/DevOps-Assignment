@@ -54,7 +54,7 @@ jobs:
       - name: Create .env.local for Frontend Build
         working-directory: frontend
         run: |
-          echo "NEXT_PUBLIC_API_URL=http://$ALB_DNS/api/message" > .env.local
+          echo "NEXT_PUBLIC_API_URL=http://$ALB_DNS/api" > .env.local
           cat .env.local
 
       - name: Login to Amazon ECR
