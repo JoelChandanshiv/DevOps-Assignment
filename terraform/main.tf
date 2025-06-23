@@ -3,7 +3,7 @@ variable "frontend_image" {
 }
 terraform {
   backend "s3" {
-    bucket         = "joel-pgagi-terraform-state "
+    bucket         = "joel-pgagi-terraform-state"
     key            = "devops/terraform.tfstate"
     region         = "ap-south-1"
     encrypt        = true

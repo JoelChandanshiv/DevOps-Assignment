@@ -94,7 +94,7 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Initialize Terraform
-        run: terraform init -backend-config="bucket=pgagi-terraform-state" -backend-config="key=devops/terraform.tfstate" -backend-config="region=ap-south-1"
+        run: terraform init -backend-config="bucket=joel-pgagi-terraform-state" -backend-config="key=terraform.tfstate" -backend-config="region=ap-south-1"
         working-directory: .
 
       - name: Terraform Plan
