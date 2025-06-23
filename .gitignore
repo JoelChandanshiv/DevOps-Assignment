@@ -65,7 +65,7 @@ backend/.env
 .terraform/
 .terraform.lock.hcl
 crash.log
-*.tfvars
+
 
 # AWS credentials (should never be committed)
 .aws/
