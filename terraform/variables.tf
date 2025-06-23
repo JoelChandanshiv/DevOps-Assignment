@@ -1,13 +1,6 @@
 variable "aws_region" {
   default = "ap-south-1"
 }
-
-variable "backend_image" {
-  description = "ECR image URI for backend"
-  type        = string
-}
-
-
 variable "backend_image_tag" {
   description = "Image tag (Git SHA) for backend"
   type        = string
