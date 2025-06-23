@@ -12,7 +12,8 @@ Welcome to my DevOps Assignment project! This repository contains a **fully auto
 
 > 🔗 [Live Frontend URL](http://your-alb-url) | 🔗 [Live Backend URL](http://your-alb-url/api/message)  
 > 📽️ [Watch the Demo Video](https://link-to-demo-video)  
-> 🗺️ [View Full Architecture Diagram](docs/architecture.html)
+> 🗺️ [View Full Architecture Diagram](https://joelchandanshiv.github.io/DevOps-Assignment/architecture.html)
+
 
 ---
 
@@ -35,7 +36,7 @@ This project demonstrates an end-to-end DevOps pipeline by building, testing, co
 
 ![Architecture Diagram](https://raw.githubusercontent.com/JoelChandanshiv/DevOps-Assignment/main/docs/architecture_screenshot.jpeg)
 
-> Or explore the [interactive architecture diagram](docs/architecture.html)
+> Or explore the [interactive architecture diagram](https://joelchandanshiv.github.io/DevOps-Assignment/architecture.html)
 
 ### Key Components:
 - **Frontend**: Next.js app deployed on ECS Fargate
