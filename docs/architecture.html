@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Assignment Architecture Diagram</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #232F3E 0%, #131A22 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+        
+        .diagram-container {
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .architecture-diagram {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: visible;
+        }
+        
+        .aws-cloud {
+            border: 3px dashed #FF9900;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            position: relative;
+        }
+        
+        .aws-cloud::before {
+            content: "AWS Cloud";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #FF9900;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 15px;
+            position: relative;
+        }
+        
+        .cicd-section {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border: 2px solid #2196F3;
+        }
+        
+        .infrastructure-section {
+            background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+            border: 2px solid #9C27B0;
+        }
+        
+        .monitoring-section {
+            background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
+            border: 2px solid #4CAF50;
+        }
+        
+        .security-section {
+            background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+            border: 2px solid #F44336;
+        }
+        
+        .section-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 10px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .service-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .service-desc {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        /* AWS Service Icons */
+        .icon-ec2 {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0ZGOTkwMCIvPgo8cGF0aCBkPSJNMTUgMTVIMzVWMzVIMTVWMTVaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0ZGOTkwMCIvPgo8cGF0aCBkPSJNMTUgMTVIMzVWMzVIMTVWMTVaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTIwIDIwSDE1VjI1SDIwVjIwWiIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTMwIDI1SDI1VjMwSDMwVjI1WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+');
+            background-color: #FF9900;
+        }
+        
+        .icon-ecs {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0ZGOTkwMCIvPgo8cGF0aCBkPSJNMTAgMTBIMjBWMjBIMTBWMTBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMzAgMTBINDBWMjBIMzBWMTBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTAgMzBIMjBWNDBIMTBWMzBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMzAgMzBINDBWNDBIMzBWMzBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4=');
+            background-color: #FF9900;
+        }
+        
+        .icon-alb {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0ZGOTkwMCIvPgo8cGF0aCBkPSJNMjUgMTBMMzUgMjBIMTVMMjUgMTBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTUgMjVIMzVWMzVIMTVWMjVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4=');
+            background-color: #FF9900;
+        }
+        
+        .icon-ecr {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0ZGOTkwMCIvPgo8Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSIxMCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+CjxjaXJjbGUgY3g9IjI1IiBjeT0iMjUiIHI9IjUiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==');
+            background-color: #FF9900;
+        }
+        
+        .icon-cloudwatch {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0ZGOTkwMCIvPgo8cGF0aCBkPSJNMTAgMzVMMjAgMjVMMzAgMzBMNDAgMjAiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPgo8Y2lyY2xlIGN4PSIyMCIgY3k9IjI1IiByPSIyIiBmaWxsPSJ3aGl0ZSIvPgo8Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIiBmaWxsPSJ3aGl0ZSIvPgo8Y2lyY2xlIGN4PSI0MCIgY3k9IjIwIiByPSIyIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4=');
+            background-color: #FF9900;
+        }
+        
+        .icon-secrets {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0ZGOTkwMCIvPgo8cGF0aCBkPSJNMTggMTVIMzJWMzVIMThWMTVaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyMCIgcj0iMyIgZmlsbD0id2hpdGUiLz4KPHBhdGggZD0iTTI1IDIzVjI4IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+');
+            background-color: #FF9900;
+        }
+        
+        .icon-vpc {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0ZGOTkwMCIvPgo8cGF0aCBkPSJNMTAgMTVINDBWMzVIMTBWMTVaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTE1IDIwSDM1VjMwSDE1VjIwWiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==');
+            background-color: #FF9900;
+        }
+        
+        .icon-iam {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iI0ZGOTkwMCIvPgo8Y2lyY2xlIGN4PSIyNSIgY3k9IjIwIiByPSI1IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTUgMzVDMTUgMzAgMTkuNDc3IDI1IDI1IDI1QzMwLjUyMyAyNSAzNSAzMCAzNSAzNSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==');
+            background-color: #FF9900;
+        }
+        
+        .icon-github {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iIzI0MjkyZSIvPgo8cGF0aCBkPSJNMjUgMTBDMzMuMjg0IDEwIDQwIDE2LjcxNiA0MCAyNUM0MCAzMy4yODQgMzMuMjg0IDQwIDI1IDQwQzE2LjcxNiA0MCAxMCAzMy4yODQgMTAgMjVDMTAgMTYuNzE2IDE2LjcxNiAxMCAyNSAxMFoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==');
+            background-color: #24292e;
+        }
+        
+        .icon-docker {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iIzIzOTZFRCIvPgo8cGF0aCBkPSJNMjAgMTVIMjVWMjBIMjBWMTVaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjUgMTVIMzBWMjBIMjVWMTVaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTUgMjBIMjBWMjVIMTVWMjBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjAgMjBIMjVWMjVIMjBWMjBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjUgMjBIMzBWMjVIMjVWMjBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMzAgMjBIMzVWMjVIMzBWMjBaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4=');
+            background-color: #2396ED;
+        }
+        
+        .icon-terraform {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iOCIgZmlsbD0iIzYyM0NFNCIvPgo8cGF0aCBkPSJNMTUgMTVMMjUgMjBWMzBMMTUgMjVWMTVaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMjUgMTVMMzUgMjBWMzBMMjUgMjVWMTVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4=');
+            background-color: #623CE4;
+        }
+        
+        .flow-arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 15px solid #333;
+            transform: rotate(45deg);
+        }
+        
+        .legend {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .legend h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        
+        .data-flow {
+            position: relative;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 100%);
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .flow-step {
+            display: inline-block;
+            background: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 20px;
+            border: 2px solid #ddd;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .flow-step::after {
+            content: "→";
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #666;
+        }
+        
+        .flow-step:last-child::after {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .flow-step {
+                display: block;
+                margin: 10px 0;
+            }
+            
+            .flow-step::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 DevOps Assignment Architecture</h1>
+            <p>Two-Tier Application with Complete CI/CD Pipeline on AWS</p>
+        </div>
+        
+        <div class="diagram-container">
+            <div class="architecture-diagram">
+                
+                <!-- Data Flow Overview -->
+                <div class="data-flow">
+                    <h3>🔄 Application Data Flow</h3>
+                    <div class="flow-step">Developer Commit</div>
+                    <div class="flow-step">GitHub Actions</div>
+                    <div class="flow-step">Docker Build</div>
+                    <div class="flow-step">ECR Push</div>
+                    <div class="flow-step">ECS Deploy</div>
+                    <div class="flow-step">ALB Route</div>
+                    <div class="flow-step">User Access</div>
+                </div>
+                
+                <!-- CI/CD Pipeline Section -->
+                <div class="section cicd-section">
+                    <div class="section-title">📦 CI/CD Pipeline & Source Control</div>
+                    <div class="service-grid">
+                        <div class="service-card">
+                            <div class="service-icon icon-github"></div>
+                            <div class="service-name">GitHub Repository</div>
+                            <div class="service-desc">Source code with branching strategy: main, develop, feature branches</div>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon icon-github"></div>
+                            <div class="service-name">GitHub Actions</div>
+                            <div class="service-desc">Automated CI/CD pipeline: test → build → push → deploy</div>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon icon-docker"></div>
+                            <div class="service-name">Docker</div>
+                            <div class="service-desc">Multi-stage builds for Python backend & Next.js frontend</div>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon icon-ecr"></div>
+                            <div class="service-name">AWS ECR</div>
+                            <div class="service-desc">Container registry for Docker images with Git SHA tags</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AWS Cloud Infrastructure -->
+                <div class="aws-cloud">
+                    
+                    <!-- Infrastructure Section -->
+                    <div class="section infrastructure-section">
+                        <div class="section-title">🏗️ Infrastructure as Code (Terraform)</div>
+                        <div class="service-grid">
+                            <div class="service-card">
+                                <div class="service-icon icon-vpc"></div>
+                                <div class="service-name">VPC & Networking</div>
+                                <div class="service-desc">Fargate services for containerized backend & frontend applications</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon icon-terraform"></div>
+                                <div class="service-name">Terraform</div>
+                                <div class="service-desc">Infrastructure as Code for reproducible AWS resource provisioning</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Application Architecture -->
+                    <div class="section infrastructure-section">
+                        <div class="section-title">🏢 Application Architecture</div>
+                        <div class="service-grid">
+                            <div class="service-card">
+                                <div class="service-icon" style="background: linear-gradient(45deg, #3776ab, #ffd343); border-radius: 50%;"></div>
+                                <div class="service-name">Python Backend</div>
+                                <div class="service-desc">REST API with Flask/FastAPI - /health, /api/message endpoints</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon" style="background: linear-gradient(45deg, #000000, #ffffff); border-radius: 50%;"></div>
+                                <div class="service-name">Next.js Frontend</div>
+                                <div class="service-desc">React-based UI consuming backend APIs with server-side rendering</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon" style="background: linear-gradient(45deg, #4CAF50, #8BC34A); border-radius: 50%;"></div>
+                                <div class="service-name">Unit Tests</div>
+                                <div class="service-desc">Backend unit tests & frontend E2E tests with Jest/Cypress</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Monitoring Section -->
+                    <div class="section monitoring-section">
+                        <div class="section-title">📊 Monitoring & Alerting</div>
+                        <div class="service-grid">
+                            <div class="service-card">
+                                <div class="service-icon icon-cloudwatch"></div>
+                                <div class="service-name">CloudWatch Metrics</div>
+                                <div class="service-desc">CPU, Memory, Request Count metrics for ECS services</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon icon-cloudwatch"></div>
+                                <div class="service-name">CloudWatch Dashboard</div>
+                                <div class="service-desc">Real-time visualization of application performance metrics</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon icon-cloudwatch"></div>
+                                <div class="service-name">CloudWatch Alarms</div>
+                                <div class="service-desc">Email alerts when CPU > 70% for 5 minutes</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon" style="background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border-radius: 50%;"></div>
+                                <div class="service-name">Log Aggregation</div>
+                                <div class="service-desc">Centralized logging for application and infrastructure logs</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Section -->
+                    <div class="section security-section">
+                        <div class="section-title">🔒 Security & Access Management</div>
+                        <div class="service-grid">
+                            <div class="service-card">
+                                <div class="service-icon icon-iam"></div>
+                                <div class="service-name">IAM Roles</div>
+                                <div class="service-desc">Least-privilege access for ECS tasks and CI/CD pipeline</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon icon-secrets"></div>
+                                <div class="service-name">AWS Secrets Manager</div>
+                                <div class="service-desc">Secure storage and runtime retrieval of API keys & DB credentials</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon" style="background: linear-gradient(45deg, #E74C3C, #C0392B); border-radius: 50%;"></div>
+                                <div class="service-name">Security Groups</div>
+                                <div class="service-desc">Network-level firewall rules controlling ingress/egress traffic</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon" style="background: linear-gradient(45deg, #9B59B6, #8E44AD); border-radius: 50%;"></div>
+                                <div class="service-name">HTTPS/SSL</div>
+                                <div class="service-desc">End-to-end encryption with AWS Certificate Manager</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- Load Balancing & Resiliency -->
+                <div class="section infrastructure-section">
+                    <div class="section-title">⚖️ Load Balancing & High Availability</div>
+                    <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                        <h4 style="margin-top: 0; color: #333;">🔄 Traffic Distribution</h4>
+                        <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px;">
+                            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px; flex: 1; min-width: 150px;">
+                                <div style="font-size: 24px; margin-bottom: 10px;">🌐</div>
+                                <div style="font-weight: bold;">Internet Gateway</div>
+                                <div style="font-size: 0.9em; color: #666;">External Traffic</div>
+                            </div>
+                            <div style="font-size: 30px; color: #666;">→</div>
+                            <div style="text-align: center; padding: 15px; background: #fff3cd; border-radius: 8px; flex: 1; min-width: 150px;">
+                                <div style="font-size: 24px; margin-bottom: 10px;">⚖️</div>
+                                <div style="font-weight: bold;">Application Load Balancer</div>
+                                <div style="font-size: 0.9em; color: #666;">Traffic Distribution</div>
+                            </div>
+                            <div style="font-size: 30px; color: #666;">→</div>
+                            <div style="text-align: center; padding: 15px; background: #d1ecf1; border-radius: 8px; flex: 1; min-width: 150px;">
+                                <div style="font-size: 24px; margin-bottom: 10px;">🐳</div>
+                                <div style="font-weight: bold;">ECS Tasks (Multi-AZ)</div>
+                                <div style="font-size: 0.9em; color: #666;">Container Instances</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: #e8f5e8; border-radius: 8px;">
+                            <h5 style="margin-top: 0; color: #2e7d32;">🎯 Resiliency Features:</h5>
+                            <ul style="margin: 10px 0; padding-left: 20px; color: #333;">
+                                <li><strong>Auto Scaling:</strong> ECS services scale based on CPU/memory utilization</li>
+                                <li><strong>Health Checks:</strong> ALB performs health checks on backend endpoints</li>
+                                <li><strong>Multi-AZ Deployment:</strong> Services deployed across multiple availability zones</li>
+                                <li><strong>Zero-Downtime Deployment:</strong> Rolling updates with blue-green deployment strategy</li>
+                                <li><strong>Failure Recovery:</strong> Automatic container restart and traffic rerouting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Deployment Strategy -->
+                <div class="section cicd-section">
+                    <div class="section-title">🚀 Deployment Strategy</div>
+                    <div style="background: white; padding: 20px; border-radius: 10px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                            <div style="padding: 15px; background: #f8f9fa; border-left: 4px solid #007bff; border-radius: 5px;">
+                                <h5 style="margin-top: 0; color: #007bff;">🔄 Continuous Integration</h5>
+                                <ul style="margin: 0; padding-left: 20px; color: #333;">
+                                    <li>Code commit triggers GitHub Actions</li>
+                                    <li>Run backend unit tests & frontend E2E tests</li>
+                                    <li>Build multi-stage Docker images</li>
+                                    <li>Push to AWS ECR with Git SHA tags</li>
+                                </ul>
+                            </div>
+                            <div style="padding: 15px; background: #f8f9fa; border-left: 4px solid #28a745; border-radius: 5px;">
+                                <h5 style="margin-top: 0; color: #28a745;">🌟 Continuous Deployment</h5>
+                                <ul style="margin: 0; padding-left: 20px; color: #333;">
+                                    <li>Merge to main branch triggers deployment</li>
+                                    <li>Update ECS service with new image</li>
+                                    <li>Rolling deployment with zero downtime</li>
+                                    <li>Health check validation before completion</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Legend -->
+                <div class="legend">
+                    <h3>📋 Architecture Legend</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); border: 2px solid #2196F3;"></div>
+                            <span><strong>CI/CD Pipeline:</strong> Source control and automation</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%); border: 2px solid #9C27B0;"></div>
+                            <span><strong>Infrastructure:</strong> AWS services and networking</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%); border: 2px solid #4CAF50;"></div>
+                            <span><strong>Monitoring:</strong> Observability and alerting</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%); border: 2px solid #F44336;"></div>
+                            <span><strong>Security:</strong> Access control and secrets management</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%); border: 3px dashed #FF9900;"></div>
+                            <span><strong>AWS Cloud:</strong> Amazon Web Services infrastructure</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Features Summary -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                    <h3 style="margin-top: 0; text-align: center;">✨ Key Architecture Features</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 30px; margin-bottom: 10px;">🔄</div>
+                            <h4 style="margin: 0;">Fully Automated CI/CD</h4>
+                            <p style="margin: 5px 0 0 0; opacity: 0.9;">From code commit to production deployment</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 30px; margin-bottom: 10px;">🏗️</div>
+                            <h4 style="margin: 0;">Infrastructure as Code</h4>
+                            <p style="margin: 5px 0 0 0; opacity: 0.9;">Terraform-managed AWS resources</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 30px; margin-bottom: 10px;">🛡️</div>
+                            <h4 style="margin: 0;">Security First</h4>
+                            <p style="margin: 5px 0 0 0; opacity: 0.9;">IAM roles, secrets management, network security</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 30px; margin-bottom: 10px;">📊</div>
+                            <h4 style="margin: 0;">Full Observability</h4>
+                            <p style="margin: 5px 0 0 0; opacity: 0.9;">Monitoring, logging, and automated alerts</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 30px; margin-bottom: 10px;">⚡</div>
+                            <h4 style="margin: 0;">High Availability</h4>
+                            <p style="margin: 5px 0 0 0; opacity: 0.9;">Load balancing and auto-scaling</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 30px; margin-bottom: 10px;">🐳</div>
+                            <h4 style="margin: 0;">Containerized</h4>
+                            <p style="margin: 5px 0 0 0; opacity: 0.9;">Docker containers with optimized builds</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>Virtual Private Cloud with public/private subnets & security groups</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon icon-alb"></div>
+                                <div class="service-name">Application Load Balancer</div>
+                                <div class="service-desc">Distributes traffic across multiple ECS tasks with health checks</div>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon icon-ecs"></div>
+                                <div class="service-name">ECS Cluster</div>
+                                <div class="service-desc">

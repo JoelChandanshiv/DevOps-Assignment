@@ -289,7 +289,7 @@ resource "aws_ecs_service" "backend_service" {
     container_port   = 8000
   }
 
-  desired_count = 1
+  desired_count = 2
 }
 
 resource "aws_ecs_service" "frontend_service" {
@@ -310,7 +310,7 @@ resource "aws_ecs_service" "frontend_service" {
     container_port   = 3000
   }
 
-  desired_count = 1
+  desired_count = 2
 }
 
 resource "aws_cloudwatch_dashboard" "ecs_dashboard" {
