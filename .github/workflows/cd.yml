@@ -7,36 +7,71 @@ on:
 
 env:
   AWS_REGION: ap-south-1
+  ECR_BACKEND_REPO: 850995570360.dkr.ecr.ap-south-1.amazonaws.com/devops-backend
+  ECR_FRONTEND_REPO: 850995570360.dkr.ecr.ap-south-1.amazonaws.com/devops-frontend
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: ${{ github.sha }}
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Setup Terraform
+      - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.6.6
 
       - name: Terraform Init
-        run: terraform init -backend-config="bucket=joel-pgagi-terraform-state" -backend-config="key=terraform.tfstate" -backend-config="region=ap-south-1"
         working-directory: terraform
+        run: |
+          terraform init \
+            -backend-config="bucket=joel-pgagi-terraform-state" \
+            -backend-config="key=devops/terraform.tfstate" \
+            -backend-config="region=${{ env.AWS_REGION }}"
 
-      - name: Terraform Plan
-        run: terraform plan -var-file="terraform.tfvars"
+      - name: Terraform Apply (Infra + ALB Only)
         working-directory: terraform
+        run: |
+          terraform apply -auto-approve -var-file="terraform.tfvars"
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve -var-file="terraform.tfvars"
+      - name: Extract ALB DNS from Terraform
+        id: alb
         working-directory: terraform
-#
+        run: |
+          echo "ALB_DNS=$(terraform output -raw alb_dns_name)" >> $GITHUB_ENV
+
+      - name: Create .env.local for Frontend Build
+        working-directory: frontend
+        run: |
+          echo "NEXT_PUBLIC_API_URL=http://$ALB_DNS/api/message" > .env.local
+          cat .env.local
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push Frontend Image (After ALB DNS Available)
+        working-directory: frontend
+        run: |
+          docker build -t $ECR_FRONTEND_REPO:${{ env.IMAGE_TAG }} .
+          docker tag $ECR_FRONTEND_REPO:${{ env.IMAGE_TAG }} $ECR_FRONTEND_REPO:latest
+          docker push $ECR_FRONTEND_REPO:${{ env.IMAGE_TAG }}
+          docker push $ECR_FRONTEND_REPO:latest
+
+      - name: Final Terraform Apply (ECS Service Deploy)
+        working-directory: terraform
+        run: |
+          terraform apply -auto-approve \
+            -var="backend_image_tag=${{ env.IMAGE_TAG }}" \
+            -var="frontend_image_tag=${{ env.IMAGE_TAG }}" \
+            -var-file="terraform.tfvars"

@@ -1,2 +1,8 @@
-backend_image = "850995570360.dkr.ecr.ap-south-1.amazonaws.com/devops-backend:529c2da"
-frontend_image = "850995570360.dkr.ecr.ap-south-1.amazonaws.com/devops-frontend:529c2da"
+aws_region          = "ap-south-1"
+backend_image_tag   = "latest"  # or "529c2da" if testing manually
+frontend_image_tag  = "latest"  # or "529c2da"
+
+
+
+
+

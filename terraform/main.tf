@@ -1,6 +1,4 @@
-variable "frontend_image" {
-  default = "850995570360.dkr.ecr.ap-south-1.amazonaws.com/devops-frontend:529c2da"
-}
+
 terraform {
   backend "s3" {
     bucket         = "joel-pgagi-terraform-state"
@@ -137,7 +135,7 @@ resource "aws_ecs_task_definition" "backend_task" {
   container_definitions = jsonencode([
   {
     name      = "backend"
-    image     = var.backend_image
+    image     = "${var.ecr_backend_repo}:${var.backend_image_tag}"
     essential = true
     portMappings = [
       {
@@ -175,7 +173,7 @@ resource "aws_ecs_task_definition" "frontend_task" {
   container_definitions = jsonencode([
     {
       name      = "frontend"
-      image     = var.frontend_image
+      image     = "${var.ecr_frontend_repo}:${var.frontend_image_tag}"
       essential = true
       portMappings = [
         {
