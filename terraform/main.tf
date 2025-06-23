@@ -365,7 +365,7 @@ resource "aws_sns_topic_subscription" "email" {
 }
 
 resource "aws_secretsmanager_secret" "api_key" {
-  name = "pgagi-api-key"
+  name = "pgagi-api-key-new"
 }
 
 resource "aws_secretsmanager_secret_version" "api_key_value" {
