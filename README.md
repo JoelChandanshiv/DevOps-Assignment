@@ -10,8 +10,8 @@ Welcome to my DevOps Assignment project! This repository contains a **fully auto
 - ✅ CloudWatch for monitoring
 - ✅ Secrets Manager and IAM for security
 
-> 🔗 [Live Frontend URL](http://your-alb-url) | 🔗 [Live Backend URL](http://your-alb-url/api/message)  
-> 📽️ [Watch the Demo Video](https://link-to-demo-video)  
+ 
+> 📽️ [Watch the Demo Video](https://www.loom.com/share/fea456f6eb6f455b94325fc91674027c?sid=221c458b-f96e-4d30-b044-45dbb19675db)  
 > 🗺️ [View Full Architecture Diagram](https://joelchandanshiv.github.io/DevOps-Assignment/architecture.html)
 
 
@@ -174,8 +174,8 @@ terraform apply -var-file="terraform.tfvars"
 
 ## 🎥 Demo Video
 
-📽️ [Click here to watch the full walkthrough](#)  
-<!-- Replace `#` with your actual video link -->
+📽️ [Click here to watch the full walkthrough](https://www.loom.com/share/fea456f6eb6f455b94325fc91674027c?sid=221c458b-f96e-4d30-b044-45dbb19675db)  
+
 
 ---
 
